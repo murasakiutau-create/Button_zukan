@@ -18,7 +18,9 @@ function buildN() {
       .replace('mix(vec3(1.0, 0.80, 0.74), vec3(0.86, 0.88, 1.0)', 'mix(vec3(1.0, 0.86, 0.8), vec3(0.95, 0.9, 0.92)')
       .replace('tint * sh * fb.b * 0.85', 'tint * sh * fb.b * 0.12');
   };
-  const front = new THREE.Mesh(cloverRelief(FACE_H, .0, .14), pm);
+  // the whole face swells up toward the middle
+  const bulge = (x, y) => { const r = Math.min(1, Math.hypot(x, y)); return .16 * Math.pow(1 - r * r, 1.2); };
+  const front = new THREE.Mesh(cloverRelief(FACE_H, .0, .14, bulge), pm);
   front.onBeforeRender = (r, s, cam) => { pm.userData.uMV.value.setFromMatrix4(new THREE.Matrix4().multiplyMatrices(cam.matrixWorldInverse, front.matrixWorld)); };
   grp.add(front);
   grp.add(new THREE.Mesh(rim(1, .03, -.08, 200), new THREE.MeshStandardMaterial({ color: 0x8a6a2a, metalness: 1, roughness: .35, envMapIntensity: 1.2 })));
