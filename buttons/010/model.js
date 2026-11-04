@@ -34,11 +34,13 @@ function buildJ() {
   const brushed = new THREE.MeshStandardMaterial({ color: 0xc9c9cc, metalness: 1, roughness: .42, envMapIntensity: 1.1 });
   const backFace = new THREE.MeshStandardMaterial({ map: tex(TEX.back), metalness: .9, roughness: .4, envMapIntensity: 1.1 });
   // toothed base plate (photo of the back on its underside), then the raised frame and the stone
-  const BZ = -.1, PZ = .02;
+  const BZ = -.1, PZ = .02, S0 = .813;
   grp.add(slab(teethOutline(.9, 1, 6), BZ, PZ, silver, backFace));
   grp.add(frame(.9, .83, PZ, .1, brushed));
   grp.add(frame(.835, .815, .06, .115, silver));
-  const S = .815, base = .07, rise = .14;
+  // red sides of the stone show above the frame
+  grp.add(new THREE.Mesh((() => { const g = new THREE.BoxGeometry(2 * S0, 2 * S0, .06); g.translate(0, 0, .13); return g; })(), new THREE.MeshPhysicalMaterial({ color: 0xa8231c, roughness: .2, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: .5 })));
+  const S = .815, base = .155, rise = .12;
   const z = (x, y) => { const u = Math.min(1, Math.abs(x) / S), v = Math.min(1, Math.abs(y) / S); return base + rise * (1 - Math.pow(u, 4)) * (1 - Math.pow(v, 4)); };
   const n = 90, pos = [], uv = [], idx = [];
   for (let j = 0; j <= n; j++) for (let i = 0; i <= n; i++) {
@@ -50,15 +52,15 @@ function buildJ() {
   sgeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sgeo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
   sgeo.setIndex(idx); sgeo.computeVertexNormals();
   const pm = pearlMat(tex(TEX.front), loader.load(TEX.sheen));
-  pm.roughness = .2; pm.envMapIntensity = .4;
+  pm.roughness = .2; pm.envMapIntensity = .25;
   // coral-red shimmer instead of the pale pearl tint
   const basePm = pm.onBeforeCompile;
   pm.onBeforeCompile = (sh) => {
     basePm(sh);
     sh.fragmentShader = sh.fragmentShader
-      .replace('mix(vec3(1.0, 0.80, 0.74), vec3(0.86, 0.88, 1.0)', 'mix(vec3(1.0, 0.5, 0.36), vec3(1.0, 0.68, 0.5)')
-      .replace('tint * sh * fb.b * 0.85', 'tint * sh * fb.b * 0.32')
-      .replace('pow(s, 70.0)', 'pow(s, 160.0)')
+      .replace('mix(vec3(1.0, 0.80, 0.74), vec3(0.86, 0.88, 1.0)', 'mix(vec3(1.0, 0.86, 0.55), vec3(1.0, 0.95, 0.8)')
+      .replace('tint * sh * fb.b * 0.85', 'tint * sh * fb.b * 1.6')
+      .replace('pow(s, 70.0)', 'pow(s, 220.0)')
       .replace('float wob = (fb.b - 0.5) * 0.35 + sin(a2 * 3.0 + vUv.x * 40.0) * 0.08;', 'float wob = 0.0;');
   };
   const stone = new THREE.Mesh(sgeo, pm);
