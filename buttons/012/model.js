@@ -9,7 +9,7 @@ function buildL() {
   const core = new THREE.Group();
   // core front: flower relief with sparkling silver glitter
   const fm = glitterMat(tex(TEX.front), loader.load(TEX.glitter));
-  fm.roughness = .2; fm.metalness = .55; fm.envMapIntensity = 1.1;
+  fm.roughness = .2; fm.metalness = .1; fm.envMapIntensity = .7;
   const baseFm = fm.onBeforeCompile;
   fm.onBeforeCompile = (sh) => { baseFm(sh); sh.fragmentShader = sh.fragmentShader.replace('totalEmissiveRadiance += acc * mk * 2.6;', 'totalEmissiveRadiance += acc * mk * 4.0;'); };
   const front = new THREE.Mesh(cloverRelief(CORE_H, .095 / C, .07 / C), fm);
@@ -40,7 +40,7 @@ function buildL() {
   const bp = bg.attributes.position, buv = bg.attributes.uv;
   for (let i = 0; i < bp.count; i++) buv.setXY(i, bp.getX(i) / 2 + .5, bp.getY(i) / 2 + .5);
   core.add(new THREE.Mesh(bg, backMat));
-  core.add(new THREE.Mesh(rim(1, .095 / C, BZ, 200), new THREE.MeshPhysicalMaterial({ color: 0x5a1a20, roughness: .3, clearcoat: .8 })));
+  core.add(new THREE.Mesh(rim(1, .095 / C, BZ, 200), new THREE.MeshPhysicalMaterial({ color: 0x6e1414, roughness: .3, clearcoat: .8 })));
   core.scale.set(C, C, C);
   grp.add(core);
   // clear acrylic rim around the core
