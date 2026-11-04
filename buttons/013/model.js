@@ -5,14 +5,8 @@ const TEX = {"front": "front.jpg", "back": "back.jpg", "sheen": "sheen.png"};
 function buildM() {
   const grp = new THREE.Group();
   const CX = .03, CY = .03;
-  const frontZ = (x, y) => {
-    const r = Math.min(1, Math.hypot(x, y)), rc = Math.hypot(x - CX, y - CY);
-    const rimH = .1 * Math.sin(Math.min(1, Math.max(0, (1 - r) / .3)) * Math.PI / 2);
-    const inner = .035 + .025 * Math.max(0, 1 - Math.pow(rc / .66, 2));
-    const t = Math.min(1, Math.max(0, (rc - .64) / .06));
-    const groove = -.025 * Math.exp(-Math.pow((rc - .69) / .018, 2));
-    return .02 + (inner * (1 - t) + rimH * t) + groove;
-  };
+  // smooth, gently rounded face: the dark ring is only colour, not a step or a groove
+  const frontZ = (x, y) => { const r = Math.min(1, Math.hypot(x, y)); const e = Math.max(0, (r - .8) / .2); return .02 + .07 * (1 - r * r * .35) - .06 * e * e; };
   const pm = pearlMat(tex(TEX.front), loader.load(TEX.sheen));
   pm.roughness = .32; pm.clearcoat = 1; pm.clearcoatRoughness = .06; pm.envMapIntensity = .4;
   const basePm = pm.onBeforeCompile;
