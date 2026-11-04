@@ -1,6 +1,6 @@
 /* No.010 */
 (() => {
-const TEX = {"front": "front.jpg", "back": "back.jpg", "sheen": "sheen.png"};
+const TEX = {"front": "front.jpg", "back": "back.jpg", "sheen": "sheen.png", "mask": "mask.png"};
 /* No.010 square silver setting with stamp-like teeth around a red shell cabochon whose silky streaks slide as it turns */
 function teethOutline(a, tip, n) {
   // square of half-size a with n triangular teeth per side reaching out to tip
@@ -51,17 +51,15 @@ function buildJ() {
   const sgeo = new THREE.BufferGeometry();
   sgeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); sgeo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
   sgeo.setIndex(idx); sgeo.computeVertexNormals();
-  const pm = pearlMat(tex(TEX.front), loader.load(TEX.sheen));
-  pm.roughness = .2; pm.envMapIntensity = .25;
-  // coral-red shimmer instead of the pale pearl tint
+  // same streak shader as No.001, tuned to the bright orange-gold ribbons of this shell
+  const pm = marbleMat(tex(TEX.front), loader.load(TEX.sheen), loader.load(TEX.mask));
+  pm.roughness = .25; pm.clearcoat = 1; pm.clearcoatRoughness = .04; pm.envMapIntensity = .3;
   const basePm = pm.onBeforeCompile;
   pm.onBeforeCompile = (sh) => {
     basePm(sh);
     sh.fragmentShader = sh.fragmentShader
-      .replace('mix(vec3(1.0, 0.80, 0.74), vec3(0.86, 0.88, 1.0)', 'mix(vec3(1.0, 0.86, 0.55), vec3(1.0, 0.95, 0.8)')
-      .replace('tint * sh * fb.b * 0.85', 'tint * sh * fb.b * 1.6')
-      .replace('pow(s, 70.0)', 'pow(s, 220.0)')
-      .replace('float wob = (fb.b - 0.5) * 0.35 + sin(a2 * 3.0 + vUv.x * 40.0) * 0.08;', 'float wob = 0.0;');
+      .replace('vec3 copper = vec3(1.0, 0.52, 0.22);', 'vec3 copper = mix(vec3(1.0, 0.62, 0.25), vec3(1.0, 0.92, 0.7), clamp(streak * 0.6, 0.0, 1.0));')
+      .replace('totalEmissiveRadiance += copper * streak * fb.b * 1.0;', 'totalEmissiveRadiance += copper * streak * fb.b * 1.8;');
   };
   const stone = new THREE.Mesh(sgeo, pm);
   stone.onBeforeRender = (r, s, cam) => { pm.userData.uMV.value.setFromMatrix4(new THREE.Matrix4().multiplyMatrices(cam.matrixWorldInverse, stone.matrixWorld)); };

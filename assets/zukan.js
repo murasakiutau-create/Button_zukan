@@ -4,6 +4,8 @@
 THREE.ColorManagement.legacyMode = false;
 const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const loader = new THREE.TextureLoader();
+// cache-busting: pages set window.ASSET_V so an updated texture is fetched fresh, not from the browser cache
+{ const _load = loader.load.bind(loader); loader.load = (u, ...rest) => _load(window.ASSET_V && !/^data:/.test(u) ? u + (u.includes('?') ? '&' : '?') + 'v=' + window.ASSET_V : u, ...rest); }
 function tex(src) {
   const t = loader.load(src);
   t.encoding = THREE.sRGBEncoding;

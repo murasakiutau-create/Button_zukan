@@ -3,7 +3,7 @@
 from data/buttons.json.  Run from the repo root:  python3 tools/build_pages.py
 The 3D code lives in assets/zukan.js (shared) and buttons/NNN/model.js (per button);
 this script only writes the HTML around them."""
-import json, html, datetime, pathlib
+import json, html, datetime, pathlib, hashlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 D = json.loads((ROOT / 'data' / 'buttons.json').read_text(encoding='utf-8'))
@@ -36,7 +36,7 @@ def head(title, desc, url, image, rel, jsonld):
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="{rel}assets/favicon.svg" type="image/svg+xml">
 {FONTS}
-<link rel="stylesheet" href="{rel}assets/zukan.css">
+<link rel="stylesheet" href="{rel}assets/zukan.css?v={ver(ROOT / 'assets' / 'zukan.css')}">
 <script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False)}</script>
 </head>
 '''
@@ -46,7 +46,7 @@ def index_page():
     items = []
     for b in BTN:
         items.append(f'''    <li><a class="card" href="buttons/{b['no']}/">
-      <div class="well"><img src="buttons/{b['no']}/thumb.png" width="512" height="512" alt="{e(b['name'])}のボタン" loading="lazy"></div>
+      <div class="well"><img src="buttons/{b['no']}/thumb.png?v={ver(ROOT / 'buttons' / b['no'] / 'thumb.png')}" width="512" height="512" alt="{e(b['name'])}のボタン" loading="lazy"></div>
       <div class="cap"><span class="no">No. {b['no']}</span><span class="name">{e(b['name'])}</span><span class="sub">{e(b['front'])}</span></div>
     </a></li>''')
     ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": SITE['title'], "description": SITE['description'], "url": BASE,
@@ -68,6 +68,14 @@ def index_page():
 </body>
 </html>
 '''
+
+
+def ver(*paths):
+    h = hashlib.sha1()
+    for p in paths:
+        for f in sorted(pathlib.Path(p).glob('*')) if pathlib.Path(p).is_dir() else [pathlib.Path(p)]:
+            if f.is_file() and f.name not in ('index.html',): h.update(f.read_bytes())
+    return h.hexdigest()[:10]
 
 
 def button_page(i, b):
@@ -106,8 +114,9 @@ def button_page(i, b):
   <footer>表と裏の模様は、実物のボタンを撮った写真から切り抜いて貼っています。厚みや足の形は写真を見ながら合わせたもので、だいたいの形です。</footer>
 </div>
 <script src="{THREE}"></script>
-<script src="../../assets/zukan.js"></script>
-<script src="model.js"></script>
+<script>window.ASSET_V = "{ver(ROOT / 'buttons' / b['no'])}";</script>
+<script src="../../assets/zukan.js?v={ver(ROOT / 'assets' / 'zukan.js')}"></script>
+<script src="model.js?v={ver(ROOT / 'buttons' / b['no'])}"></script>
 </body>
 </html>
 '''
