@@ -36,7 +36,7 @@ tools/build_pages.py     HTML / sitemap.xml / robots.txt を生成
    - ラメのある場所 → `glitter.png`
 5. model.js で形を組む（`cap` / `rim` / `cloverRelief`（高さマップ）/ `stripRot` / ExtrudeGeometry）。材質は zukan.js の `marbleMat` `glowMat` `pearlMat` `glitterMat` `bowMat` などを使い回す。
 6. 裏の足はたいてい「溝＋真ん中の小さな橋（下に糸のトンネル）」。盛り上がった棒ではない。
-7. data/buttons.json に追記 → build_pages.py → サムネイル（`?thumb` を付けて開き canvas.toDataURL、512px）を作る。
+7. data/buttons.json に追記 → build_pages.py → サムネイル（`?thumb` を付けて開き、**真正面（yaw 0, pitch 0）**で canvas.toDataURL、512px）を作る。一覧ページは真正面固定の約束。
 
 ## 座標のきまり
 
