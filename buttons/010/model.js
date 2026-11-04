@@ -58,8 +58,8 @@ function buildJ() {
   pm.onBeforeCompile = (sh) => {
     basePm(sh);
     sh.fragmentShader = sh.fragmentShader
-      .replace('vec3 copper = vec3(1.0, 0.52, 0.22);', 'vec3 copper = mix(vec3(1.0, 0.62, 0.25), vec3(1.0, 0.92, 0.7), clamp(streak * 0.6, 0.0, 1.0));')
-      .replace('totalEmissiveRadiance += copper * streak * fb.b * 1.0;', 'totalEmissiveRadiance += copper * streak * fb.b * 1.8;');
+      .replace('vec3 copper = vec3(1.0, 0.52, 0.22);', 'vec3 copper = mix(vec3(1.0, 0.36, 0.16), vec3(1.0, 0.88, 0.62), clamp(streak * streak * 0.5, 0.0, 1.0));')
+      .replace('totalEmissiveRadiance += copper * streak * fb.b * 1.0;', 'totalEmissiveRadiance += copper * streak * fb.b * 1.3;');
   };
   const stone = new THREE.Mesh(sgeo, pm);
   stone.onBeforeRender = (r, s, cam) => { pm.userData.uMV.value.setFromMatrix4(new THREE.Matrix4().multiplyMatrices(cam.matrixWorldInverse, stone.matrixWorld)); };
