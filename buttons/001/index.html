@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>No.001 ブラウンマーブル | ボタン図鑑</title>
+<meta name="description" content="金とこげ茶が渦を巻くマーブル模様のボタン。傾けると銅色の筋とラメが光る様子を、3Dで回して眺められます。">
+<link rel="canonical" href="https://murasakiutau-create.github.io/Button_zukan/buttons/001/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ボタン図鑑">
+<meta property="og:title" content="No.001 ブラウンマーブル | ボタン図鑑">
+<meta property="og:description" content="金とこげ茶が渦を巻くマーブル模様のボタン。傾けると銅色の筋とラメが光る様子を、3Dで回して眺められます。">
+<meta property="og:url" content="https://murasakiutau-create.github.io/Button_zukan/buttons/001/">
+<meta property="og:image" content="https://murasakiutau-create.github.io/Button_zukan/buttons/001/thumb.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../assets/zukan.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ボタン図鑑", "item": "https://murasakiutau-create.github.io/Button_zukan/"}, {"@type": "ListItem", "position": 2, "name": "No.001 ブラウンマーブル", "item": "https://murasakiutau-create.github.io/Button_zukan/buttons/001/"}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <nav class="sitebar" aria-label="パンくず">
+    <ol class="crumbs"><li><a href="../../">ボタン図鑑</a></li><li>No.001</li></ol>
+  </nav>
+  <main class="detail">
+    <div class="stage"><div class="loading">読みこみ中…</div><canvas id="cv" aria-label="ブラウンマーブルのボタンの3D表示"></canvas><span class="hint">ドラッグで回転</span></div>
+    <div class="info">
+      <span class="no">No. 001</span>
+      <h1>ブラウンマーブル</h1>
+      <p class="highlight">傾けると、模様の流れに沿って銅色の筋が光り、縁のラメがきらっと瞬きます。</p>
+      <dl>
+        <dt>表</dt><dd>金とこげ茶が渦を巻くマーブル模様</dd>
+        <dt>裏</dt><dd>なめらかなドーム型、横に彫った溝と小さな橋の足</dd>
+      </dl>
+      <div class="views" data-for="v">
+        <button type="button" id="v-front" data-view="front" aria-pressed="false">表</button>
+        <button type="button" id="v-back" data-view="back" aria-pressed="false">裏</button>
+        <button type="button" id="v-side" data-view="side" aria-pressed="false">横</button>
+      </div>
+    </div>
+  </main>
+  <nav class="pager" aria-label="ほかのボタン"><span></span><a href="../002/">No.002 金のクローバー →</a></nav>
+  <footer>表と裏の模様は、実物のボタンを撮った写真から切り抜いて貼っています。厚みや足の形は写真を見ながら合わせたもので、だいたいの形です。</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="../../assets/zukan.js"></script>
+<script src="model.js"></script>
+</body>
+</html>

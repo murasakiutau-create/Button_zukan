@@ -1,0 +1,9 @@
+# 撮ったままの写真・動画はコミットしない
+raw/
+originals/
+*.mp4
+*.mov
+*.heic
+thumb_full.png
+__pycache__/
+.DS_Store
